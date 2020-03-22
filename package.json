@@ -13,7 +13,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd api && nodemon server.js"
+    "start": "cd api && nodemon server.js",
+    "start:prod": "cd api & SET NODE_ENV=production& nodemon server.js",
+    "debug": "cd api && ndb server.js"
   },
   "author": "Trivedh",
   "license": "MIT"
