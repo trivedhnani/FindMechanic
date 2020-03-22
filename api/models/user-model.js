@@ -22,5 +22,9 @@ const userSchema = new mongoose.Schema({
     default: true
   }
 });
+userSchema.pre(/^find/, function(next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
 const User = new mongoose.model('User', userSchema);
 module.exports = User;
