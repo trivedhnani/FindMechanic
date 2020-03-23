@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const userRouter = require('./routes/user-router');
+const reviewRouter = require('./routes/review-router');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 // helmet for security HTTP headers
@@ -37,6 +38,7 @@ app.use(express.static(`${__dirname}/public`));
 
 // Routers
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 app.all('*', (req, res, next) => {
   const message = `Can't find ${req.originalUrl} on this server`;
   next(new AppError(404, message));
