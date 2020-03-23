@@ -9,6 +9,9 @@ module.exports = (err, req, res, next) => {
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateKeyDB(error);
     if (error.name === 'ValidationError') error = handleValidationError(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError(error);
+    if (error.name === 'TokenExpiredError')
+      error = handleJWTTokenExpiredError(error);
     sendErrProd(error, res);
   }
 };
@@ -52,3 +55,7 @@ const handleValidationError = err => {
   const message = `Invalid input data.${value} `;
   return new AppError(400, message);
 };
+const handleJWTError = err =>
+  new AppError(401, 'Invalid token. Please try again');
+const handleJWTTokenExpiredError = err =>
+  new AppError(401, 'Your Token has Expired');

@@ -3,6 +3,7 @@ const { promisify } = require('util');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const sendEMail = require('../utils/emailHandler');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -118,17 +119,19 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .createHash('sha256')
     .update(req.params.token)
     .digest('hex');
-  const user = await User.find({
+  const user = await User.findOne({
     passwordResetToken: hashedResetToken,
-    passwordExpires: { $gt: Date.now() }
+    passwordResetExpires: { $gt: Date.now() }
   });
   if (!user) {
     return next(new AppError(400, 'This token is invalid or expired'));
   }
+  //   console.log(user);
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  user.resetToken = undefined;
-  user.passwordExpires = undefined;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
   await user.save();
   createAndSendToken(user, res);
 });
