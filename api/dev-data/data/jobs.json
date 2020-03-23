@@ -1,0 +1,46 @@
+[
+  {
+    "_id": "5e79169834afd94358c20c3d",
+    "vehicle": "car",
+    "description": "Break fail",
+    "location": {
+      "type": "Point",
+      "coordinates": [-80.185942, 25.774772],
+      "address": "301 Biscayne Blvd, Miami, FL 33132, USA"
+    },
+    "user": "5c8a1dfa2f8fb814b56fa181"
+  },
+  {
+    "_id": "5e79169834afd94358c20c3e",
+    "vehicle": "car",
+    "description": "Starting trouble",
+    "location": {
+      "type": "Point",
+      "coordinates": [-115.570154, 51.178456],
+      "address": "224 Banff Ave, Banff, AB, Canada"
+    },
+    "user": "5c8a1e1a2f8fb814b56fa182"
+  },
+  {
+    "_id": "5e79169834afd94358c20c3f",
+    "vehicle": "car",
+    "description": "Tyre fail",
+    "location": {
+      "type": "Point",
+      "coordinates": [-106.822318, 39.190872],
+      "address": "419 S Mill St, Aspen, CO 81611, USA"
+    },
+    "user": "5c8a1ec62f8fb814b56fa183"
+  },
+  {
+    "_id": "5e79169834afd94358c20c40",
+    "vehicle": "bike",
+    "description": "Break fail",
+    "location": {
+      "type": "Point",
+      "coordinates": [-115.172652, 36.110904],
+      "address": "3663 S Las Vegas Blvd, Las Vegas, NV 89109, USA"
+    },
+    "user": "5c8a1ec62f8fb814b56fa183"
+  }
+]

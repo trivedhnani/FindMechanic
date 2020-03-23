@@ -13,6 +13,21 @@ const reviewSchema = new mongoose.Schema(
     },
     createdAt: {
       type: Date
+    },
+    mechanic: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: [true, 'Review must belong to a mechanic']
+    },
+    job: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Job',
+      required: [true, 'Review must belong to a job']
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: [true, 'A review must be given by user']
     }
   },
   {
@@ -22,6 +37,21 @@ const reviewSchema = new mongoose.Schema(
 );
 reviewSchema.pre('save', function(next) {
   if (this.isNew) this.createdAt = Date.now();
+  next();
+});
+reviewSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'job',
+    select: 'vehicle description'
+  })
+    .populate({
+      path: 'mechanic',
+      select: 'id name email'
+    })
+    .populate({
+      path: 'user',
+      select: 'name email'
+    });
   next();
 });
 const Review = new mongoose.model('Review', reviewSchema);

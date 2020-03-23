@@ -1,0 +1,34 @@
+[
+  {
+    "_id": "5e79169834afd94358c20c41",
+    "rating": 4,
+    "review": "mind blowing",
+    "mechanic": "5c8a201e2f8fb814b56fa186",
+    "job": "5e79169834afd94358c20c3d",
+    "user": "5c8a1dfa2f8fb814b56fa181"
+  },
+  {
+    "_id": "5e79169834afd94358c20c42",
+    "rating": 5,
+    "review": "awesome",
+    "mechanic": "5c8a1f292f8fb814b56fa184",
+    "job": "5e79169834afd94358c20c3e",
+    "user": "5c8a1e1a2f8fb814b56fa182"
+  },
+  {
+    "_id": "5e79169834afd94358c20c43",
+    "rating": 4,
+    "review": "very good",
+    "mechanic": "5c8a22c62f8fb814b56fa18b",
+    "job": "5e79169834afd94358c20c3f",
+    "user": "5c8a1ec62f8fb814b56fa183"
+  },
+  {
+    "_id": "5e79169834afd94358c20c44",
+    "rating": 2,
+    "review": "omg!",
+    "mechanic": "5c8a1f4e2f8fb814b56fa185",
+    "job": "5e79169834afd94358c20c40",
+    "user": "5c8a1ec62f8fb814b56fa183"
+  }
+]

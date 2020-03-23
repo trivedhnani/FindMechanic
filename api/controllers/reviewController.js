@@ -3,7 +3,8 @@ const catchAsync = require('../utils/catchAsync');
 const ApiFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 exports.getReviews = catchAsync(async (req, res, next) => {
-  const reviews = await new ApiFeatures(Review.find(), req.query)
+  const filterObj = req.params.mechId ? { mechanic: req.params.mechId } : {};
+  const reviews = await new ApiFeatures(Review.find(filterObj), req.query)
     .filter()
     .sort()
     .fields()
@@ -25,7 +26,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
     }
   });
 });
-const filterObj = ({ body, ...allowedFields }) => {
+const filterObj = (body, ...allowedFields) => {
   const newObj = {};
   Object.keys(body).forEach(el => {
     if (allowedFields.includes(el)) {
