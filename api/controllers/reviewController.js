@@ -70,3 +70,8 @@ exports.deleteReview = catchAsync(async (req, res, next) => {
     data: null
   });
 });
+exports.setUserAndMech = (req, res, next) => {
+  if (!req.body.user) req.body.user = req.user.id;
+  if (!req.body.mechanic) req.body.mechanic = req.params.mechId;
+  next();
+};

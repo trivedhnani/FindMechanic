@@ -36,8 +36,8 @@ const reviewSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
-// Enforcing unique review for each user job pair
-reviewSchema.index({ user: 1, job: 1 }, { unique: true });
+// Enforcing one review for each job
+reviewSchema.index({ job: 1 }, { unique: true });
 reviewSchema.pre('save', function(next) {
   if (this.isNew) this.createdAt = Date.now();
   next();
@@ -49,12 +49,12 @@ reviewSchema.post('save', async function() {
 // We have to write findOneAnd because we are using findOne internally, causes recursion
 // findById is internally findOneAnd. So hooks work fine
 reviewSchema.pre(/^findOneAnd/, async function(next) {
-  this.mechanicDoc = await this.model.findOne(this.getQuery());
-  console.log(this.mechanicDoc);
+  this.reviewDoc = await this.model.findOne(this.getQuery());
+  // console.log(this.reviewDoc);
   next();
 });
 reviewSchema.post(/^findOneAnd/, async function() {
-  await this.mechanicDoc.constructor.calcRatings(this.mechanicDoc.id);
+  await this.reviewDoc.constructor.calcRatings(this.reviewDoc.mechanic);
 });
 // Be sure to not use arrow functions in model since it explixitly sets the this variable
 reviewSchema.statics.calcRatings = async function(mechId) {
@@ -70,7 +70,7 @@ reviewSchema.statics.calcRatings = async function(mechId) {
       }
     }
   ]);
-  // console.log(stats);
+  console.log(stats);
   if (stats.length > 0) {
     // Do not call findOneAndUpdate as it calls pre find hook again and that calls this static function again
     await User.findByIdAndUpdate(mechId, {
@@ -79,7 +79,7 @@ reviewSchema.statics.calcRatings = async function(mechId) {
     });
   } else {
     await User.findByIdAndUpdate(mechId, {
-      ratingsAverage: 0, // If every review is deleted then these are the default
+      averageRating: 0, // If every review is deleted then these are the default
       ratingsQuantity: 4.5
     });
   }

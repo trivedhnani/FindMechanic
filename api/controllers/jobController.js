@@ -67,3 +67,7 @@ exports.deleteJob = catchAsync(async (req, res, next) => {
     data: null
   });
 });
+exports.setUser = (req, res, next) => {
+  if (!req.body.user) req.body.user = req.user.id;
+  next();
+};

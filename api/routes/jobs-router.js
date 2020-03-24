@@ -12,6 +12,7 @@ router
   .post(
     authController.protect,
     authController.restrictTo('user'),
+    jobController.setUser,
     jobController.createJob
   );
 router
@@ -19,6 +20,7 @@ router
   .patch(
     authController.protect,
     authController.restrictTo('user'),
+    jobController.setUser,
     jobController.updateJob
   )
   .delete(
