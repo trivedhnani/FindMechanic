@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    ratingsQuantity: {
+      type: Number,
+      default: 0
+    },
+    averageRating: {
+      type: Number,
+      default: 0
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date
@@ -46,16 +54,27 @@ const userSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+
+userSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'user',
+  localField: '_id'
+});
+userSchema.virtual('jobs', {
+  ref: 'Job',
+  foreignField: 'user',
+  localField: '_id'
+});
+// userSchema.pre('save', function(next) {
+//   if (!this.isModified('password') || this.isNew) return next();
+//   this.passwordChangedAt = Date.now() - 1000;
+//   next();
+// });
 // userSchema.pre('save', async function(next) {
 //   if (this.isModified('password') || this.isNew) {
 //     this.password = await bcrypt.hash(this.password, 12);
 //     this.passwordConfirm = undefined;
 //   }
-//   next();
-// });
-// userSchema.pre('save', function(next) {
-//   if (!this.isModified('password') || this.isNew) return next();
-//   this.passwordChangedAt = Date.now() - 1000;
 //   next();
 // });
 userSchema.pre(/^find/, function(next) {

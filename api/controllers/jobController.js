@@ -8,7 +8,7 @@ exports.getJobs = catchAsync(async (req, res, next) => {
     .sort()
     .fields()
     .limit()
-    .populate({
+    .query.populate({
       path: 'review',
       select: 'review rating'
     })
@@ -20,7 +20,6 @@ exports.getJobs = catchAsync(async (req, res, next) => {
       path: 'user',
       select: 'name email'
     });
-  query;
   res.status(200).json({
     status: 'success',
     results: jobs.length,
@@ -49,7 +48,8 @@ const filterObj = (body, ...allowedFields) => {
 };
 exports.updateJob = catchAsync(async (req, res, next) => {
   const filteredObj = filterObj(req.body, 'description', 'vehicle');
-  const job = await Job.findByIdAndUpdate(req.params.id, filteredObj, {
+  //   Query middleware is not supported for findByIdAndUpdate and findByIdAndDelete use findOneUpdate and findOneAndDelete instead
+  const job = await Job.findOneUpdate(req.params.id, filteredObj, {
     runValidators: true,
     new: true
   });
@@ -61,7 +61,7 @@ exports.updateJob = catchAsync(async (req, res, next) => {
   });
 });
 exports.deleteJob = catchAsync(async (req, res, next) => {
-  const job = await Job.findByIdAndDelete(req.params.id);
+  const job = await Job.findOneAndDelete(req.params.id);
   res.status(204).json({
     status: 'success',
     data: null

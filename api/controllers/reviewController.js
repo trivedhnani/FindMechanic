@@ -8,7 +8,19 @@ exports.getReviews = catchAsync(async (req, res, next) => {
     .filter()
     .sort()
     .fields()
-    .limit().query;
+    .limit()
+    .query.populate({
+      path: 'job',
+      select: 'vehicle description'
+    })
+    .populate({
+      path: 'mechanic',
+      select: 'id name email'
+    })
+    .populate({
+      path: 'user',
+      select: 'name email'
+    });
   res.status(200).json({
     status: 'success',
     results: reviews.length,
@@ -41,6 +53,9 @@ exports.updateReview = catchAsync(async (req, res, next) => {
     runValidators: true,
     new: true
   });
+  if (!review) {
+    return next(new AppError(400, 'No document with that id'));
+  }
   res.status(200).json({
     status: 'success',
     data: {

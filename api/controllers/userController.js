@@ -3,7 +3,12 @@ const ApiFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 exports.createUser = catchAsync(async (req, res, next) => {
-  const user = await User.create(req.body);
+  const user = await User.create({
+    name: req.name,
+    email: req.email,
+    password: req.password,
+    passwordConfirm: req.passwordConfirm
+  });
   res.status(200).json({
     status: 'success',
     data: {
@@ -28,7 +33,9 @@ exports.getAll = catchAsync(async (req, res, next) => {
 });
 exports.getUser = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  const user = await User.findById(id);
+  const user = await User.findById(id)
+    .populate({ path: 'reviews', select: 'rating review' })
+    .populate({ path: 'jobs', select: 'vehicle description' });
   if (!user) {
     return next(new AppError(404, 'No user found with that id'));
   }
